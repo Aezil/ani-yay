@@ -1,43 +1,21 @@
-import './App.css';
+import React from 'react';
+import styled from 'styled-components';
 
-import { gql, useQuery } from '@apollo/client';
-import React, { useEffect } from 'react';
+import { Home } from './pages';
 
-import logo from './logo.svg';
-import { Home } from './pages/home';
-
-const query = gql`
-  query PageQuery {
-    Page(page: 1, perPage: 25) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-      }
-      media(search: "last e") {
-        id
-        title {
-          romaji
-        }
-        description
-      }
-    }
-  }
+const StyledContainer = styled.div`
+  background-color: #fff;
+  margin: auto;
+  max-width: 850px;
+  padding: 30px;
+  border-radius: 10px;
 `;
 
 function App() {
-  const { data, loading } = useQuery(query);
-
-  useEffect(() => {
-    console.log({ data, loading });
-  }, [data, loading]);
-
   return (
-    <div className='App'>
+    <StyledContainer>
       <Home />
-    </div>
+    </StyledContainer>
   );
 }
 

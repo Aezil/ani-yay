@@ -1,52 +1,138 @@
-import { useQuery } from '@apollo/client';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { useLazyQuery } from '@apollo/client';
+import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { animeQuery } from '../../gql/Query';
+import { AniYayButton, AniYayDropdown, AniYayInput, AniYayTable, Heading, Text } from '../../components';
+import { AnimeQueryResult, Media, MediaStatus, MediaType } from '../../interfaces/interfaces';
+import { pageQuery } from '../../queries/pageQueries';
+import {
+  StyledButtonContainer,
+  StyledFilter,
+  StyledFilterContainer,
+  StyledHeadingContainer,
+  StyledInputContainer,
+  StyledLoadingText,
+  StyledSearchContainer,
+  StyledSpinnerContainer,
+} from './styled-components';
 
-const mockData = [
+const StatusDropdown = [
   {
-    id: 'tacos',
-    title: 'taco bell',
+    value: MediaStatus.finished,
+    label: 'Finished',
   },
   {
-    id: 'foodie',
-    title: 'food place',
+    value: MediaStatus.releasing,
+    label: 'Releasing',
   },
   {
-    id: 'burger',
-    title: 'mcdonalds',
+    value: MediaStatus.notYetReleased,
+    label: 'Not Yet Released',
+  },
+  {
+    value: MediaStatus.cancelled,
+    label: 'Cancelled',
+  },
+  {
+    value: MediaStatus.hiatus,
+    label: 'Hiatus',
+  },
+];
+
+export const TypeDropdown = [
+  {
+    value: MediaType.anime,
+    label: 'Anime',
+  },
+  {
+    value: MediaType.manga,
+    label: 'Manga',
   },
 ];
 
 export const Home = () => {
-  const [value, setValue] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [media, setMedia] = useState<Media[]>([]);
+  const [statusFilter, setStatusFilter] = useState<MediaStatus>();
+  const [typeFilter, setTypeFilter] = useState<MediaType>();
 
-  const { data, loading } = useQuery(animeQuery, {
-    variables: {
-      page: 1,
-      perPage: 25,
-      title: 'Last Exile',
-    },
-  });
+  const [loadAnime, { called, data, loading }] = useLazyQuery<AnimeQueryResult>(pageQuery);
 
-  console.log({ data, loading });
+  useEffect(() => {
+    if (loading || !data) {
+      return;
+    }
 
-  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    setMedia(data.Page.media);
+  }, [data, loading]);
+
+  useEffect(() => {
+    if (data) {
+      const statusResult = statusFilter
+        ? data.Page.media.filter((option: Media) => option.status === statusFilter)
+        : data.Page.media;
+      const filteredResult = typeFilter
+        ? statusResult.filter((option: Media) => option.type === typeFilter)
+        : statusResult;
+      setMedia(filteredResult);
+    }
+  }, [data, statusFilter, typeFilter]);
+
+  const handleOnChange = (event: any): void => {
+    setTitle(event.target.value);
+  };
+
+  const handleOnSearch = (): void => {
+    loadAnime({
+      variables: {
+        page: 1,
+        title: title,
+      },
+    });
+  };
+
+  const handleStatusChange = (value: MediaStatus): void => {
+    setStatusFilter(value);
+  };
+
+  const handleTypeChange = (value: MediaType): void => {
+    setTypeFilter(value);
   };
 
   return (
     <>
-      <h1>Ani Yay</h1>
-      <FontAwesomeIcon icon={faCoffee} />
-      <div className='searchBar'>
-        <input type='text' placeholder='Search' onChange={handleValueChange} value={value} />
-      </div>
-      {mockData.map((item: any, index: number) => (
-        <div key={index}>{item.title}</div>
-      ))}
+      <StyledHeadingContainer>
+        <Heading>AniYAY</Heading>
+      </StyledHeadingContainer>
+      <StyledSearchContainer>
+        <StyledInputContainer>
+          <AniYayInput type='text' onChange={handleOnChange} placeholder='Enter an anime title...' />
+        </StyledInputContainer>
+        <StyledButtonContainer>
+          <AniYayButton handleClick={handleOnSearch} label={'Search'} icon={<FontAwesomeIcon icon={faSearch} />} />
+        </StyledButtonContainer>
+      </StyledSearchContainer>
+      {!called ? (
+        <Text>Lets find you some anime to watch or manga to read!</Text>
+      ) : loading ? (
+        <StyledSpinnerContainer>
+          <FontAwesomeIcon size='2x' icon={faSpinner} />
+          <StyledLoadingText>loading...</StyledLoadingText>
+        </StyledSpinnerContainer>
+      ) : (
+        <>
+          <StyledFilterContainer>
+            <StyledFilter>
+              <AniYayDropdown label='Choose a Status Filter' options={StatusDropdown} onChange={handleStatusChange} />
+            </StyledFilter>
+            <StyledFilter>
+              <AniYayDropdown label='Choose a Type Filter' options={TypeDropdown} onChange={handleTypeChange} />
+            </StyledFilter>
+          </StyledFilterContainer>
+          <AniYayTable media={media} />
+        </>
+      )}
     </>
   );
 };
