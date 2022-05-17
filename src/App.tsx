@@ -6,7 +6,7 @@ import { Home } from './pages';
 const StyledContainer = styled.div`
   background-color: #fff;
   margin: auto;
-  max-width: 850px;
+  max-width: 1200px;
   padding: 30px;
   border-radius: 10px;
 `;

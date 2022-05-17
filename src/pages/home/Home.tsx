@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 
 import { AniYayButton, AniYayDropdown, AniYayInput, AniYayTable, Heading, Text } from '../../components';
-import { AnimeQueryResult, Media, MediaStatus, MediaType } from '../../interfaces/interfaces';
+import { StatusDropdown, TypeDropdown } from '../../constants';
+import { AnimeQueryResult, Media, MediaStatus, MediaType, PageInfo } from '../../interfaces/interfaces';
 import { pageQuery } from '../../queries/pageQueries';
 import {
   StyledButtonContainer,
+  StyledErrorText,
   StyledFilter,
   StyledFilterContainer,
   StyledHeadingContainer,
@@ -17,47 +19,14 @@ import {
   StyledSpinnerContainer,
 } from './styled-components';
 
-const StatusDropdown = [
-  {
-    value: MediaStatus.finished,
-    label: 'Finished',
-  },
-  {
-    value: MediaStatus.releasing,
-    label: 'Releasing',
-  },
-  {
-    value: MediaStatus.notYetReleased,
-    label: 'Not Yet Released',
-  },
-  {
-    value: MediaStatus.cancelled,
-    label: 'Cancelled',
-  },
-  {
-    value: MediaStatus.hiatus,
-    label: 'Hiatus',
-  },
-];
-
-export const TypeDropdown = [
-  {
-    value: MediaType.anime,
-    label: 'Anime',
-  },
-  {
-    value: MediaType.manga,
-    label: 'Manga',
-  },
-];
-
 export const Home = () => {
   const [title, setTitle] = useState<string>('');
   const [media, setMedia] = useState<Media[]>([]);
+  const [pageInfo, setPageInfo] = useState<PageInfo>();
   const [statusFilter, setStatusFilter] = useState<MediaStatus>();
   const [typeFilter, setTypeFilter] = useState<MediaType>();
 
-  const [loadAnime, { called, data, loading }] = useLazyQuery<AnimeQueryResult>(pageQuery);
+  const [loadAnime, { called, data, loading, error }] = useLazyQuery<AnimeQueryResult>(pageQuery);
 
   useEffect(() => {
     if (loading || !data) {
@@ -65,6 +34,7 @@ export const Home = () => {
     }
 
     setMedia(data.Page.media);
+    setPageInfo(data.Page.pageInfo);
   }, [data, loading]);
 
   useEffect(() => {
@@ -120,6 +90,8 @@ export const Home = () => {
           <FontAwesomeIcon size='2x' icon={faSpinner} />
           <StyledLoadingText>loading...</StyledLoadingText>
         </StyledSpinnerContainer>
+      ) : error ? (
+        <StyledErrorText>An error has occurred: {error.message}</StyledErrorText>
       ) : (
         <>
           <StyledFilterContainer>
@@ -130,7 +102,18 @@ export const Home = () => {
               <AniYayDropdown label='Choose a Type Filter' options={TypeDropdown} onChange={handleTypeChange} />
             </StyledFilter>
           </StyledFilterContainer>
-          <AniYayTable media={media} />
+          <div className='table-responsive'>
+            {media.length === 0 ? (
+              <Text>There are 0 results.</Text>
+            ) : (
+              <>
+                <Text>
+                  There are {media.length} and this is page {pageInfo?.currentPage} out of {pageInfo?.lastPage}
+                </Text>
+                <AniYayTable media={media} />
+              </>
+            )}
+          </div>
         </>
       )}
     </>

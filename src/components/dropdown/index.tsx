@@ -11,7 +11,6 @@ export interface DropdownOption {
 
 interface Props {
   label: string;
-  defaultLabel?: string;
   options: DropdownOption[];
   onChange: (event: any) => void;
 }

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const pageQuery = gql`
-  query PageQuery($page: Int, $perPage: Int, $title: String) {
-    Page(page: $page, perPage: $perPage) {
+  query PageQuery($page: Int, $title: String) {
+    Page(page: $page) {
       pageInfo {
         total
         currentPage

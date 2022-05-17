@@ -1,5 +1,4 @@
 import './index.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import React from 'react';
