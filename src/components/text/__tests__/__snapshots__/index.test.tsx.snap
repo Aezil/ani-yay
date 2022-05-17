@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ani-Yay Text should render the text component 1`] = `
+<div>
+  <p
+    class="sc-bczRLJ iPHaNS"
+  >
+    Snake?? Snake??? SNAAAAAAAAAAAAAAAAAKKKKKKKKEEEEEEEE
+  </p>
+</div>
+`;

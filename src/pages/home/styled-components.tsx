@@ -58,3 +58,7 @@ export const StyledFilter = styled.div`
     }
   }
 `;
+
+export const StyledErrorText = styled(Text)`
+  color: #fa2a2b;
+`;

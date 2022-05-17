@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ani-Yay Input should render Input component with a value 1`] = `
+<div>
+  <input
+    class="sc-bczRLJ fPPSOS"
+    placeholder="Hello there!"
+    value="GENERAL KENOBI"
+  />
+</div>
+`;
+
+exports[`Ani-Yay Input should render Input component with no value 1`] = `
+<div>
+  <input
+    class="sc-bczRLJ fPPSOS"
+    placeholder="Hello there!"
+  />
+</div>
+`;
