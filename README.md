@@ -1,46 +1,35 @@
-# Getting Started with Create React App
+# AniYay
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## To run
+1. clone repo
+2. run yarn install
+3. run yarn start
+4. navigate to localhost:3000
 
-## Available Scripts
+## To test
+1. run yarn test
 
-In the project directory, you can run:
+## Questions
+1. What is the URL to your GitHub-Pages site?
 
-### `yarn start`
+https://github.com/Aezil/ani-yay
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. What API did you use and why?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+https://github.com/AniList/ApiV2-GraphQL-Docs I used this API because I enjoy anime and games, and wanted to use something I am passionate about!
 
-### `yarn test`
+3. What are some other applications for your API other than searching? Name a few and describe how an app using it for that purpose might work.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can create a user watched/read database where users will choose which anime or manga they have read/watched and marked as read or watched and they can also vote and rank the anime/manga for their list. This can also be made to allow users to monitor upcoming anime and latest news on releases.
 
-### `yarn build`
+4. Explain the considerations you needed to make for the website to be responsive & mobile-friendly.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I developed the website to be friendly on mobile first and then moved onto desktop. While it said it was fine to use bootstrap I went ahead and wrote up CSS that handles the responsiveness myself. I did however use the table from Bootstrap to quickly get the styling done for the table. I wanted to take the opportunity to show that I can not only use frameworks such as Bootstrap or Material UI, but I can also write my own CSS to handle responsive designs.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. How can you make your app accessible to people with disabilities such as blindness or colorblindness?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+While I didn't do this in the app, I would have added aria-label to links and buttons and to the table. For color blindness and blindness, I would not rely on colors as much and make things flat and easy to read. Using icons instead or colors to show successes or issues, making the site screen reader friendly, and add the function to change text size on screen.
 
-### `yarn eject`
+6. If you could make further changes to your project to improve/expand the experience, what would they be and how would you go about implementing them?
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+I would setup paging for the table to make it where we can move across the pages, I would then create a user profile by adding a backend support with a database and start creating a "my anime/manga" list type of site. Cover art is important as this is usually what many go by in finding new anime, so I would add images for the anime. Another feature that the community likes is the ability to share wallpapers and arts. I could create a social gathering section on the sites for these features.
